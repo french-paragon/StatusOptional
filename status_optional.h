@@ -1,3 +1,6 @@
+#ifndef STATUS_OPTIONAL_HEADER
+#define STATUS_OPTIONAL_HEADER
+
 #include <string>
 #include <optional>
 
@@ -340,3 +343,5 @@ protected:
     bool _isValid;
     std::optional<MsgT> _msg;
 };
+
+#endif
