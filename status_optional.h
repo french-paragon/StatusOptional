@@ -91,14 +91,14 @@ public:
 
     StatusOptional(StatusOptional<T,MsgT> const& other) :
         _val(other._val),
-        _msg(other.message())
+		_msg(other._msg)
     {
 
     }
 
     StatusOptional(StatusOptional<T,MsgT> && other) :
         _val(std::move(other._val)),
-        _msg(std::move(other.message()))
+		_msg(std::move(other._msg))
     {
 
     }
@@ -260,14 +260,14 @@ public:
 
     StatusOptional(StatusOptional<void,MsgT> const& other) :
         _isValid(other._isValid),
-        _msg(other.message())
+		_msg(other._msg)
     {
 
     }
 
     StatusOptional(StatusOptional<void,MsgT> && other) :
         _isValid(other._isValid),
-        _msg(std::move(other.message()))
+		_msg(std::move(other._msg))
     {
 
     }
