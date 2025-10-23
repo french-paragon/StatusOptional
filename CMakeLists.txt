@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 
+include(CMakePackageConfigHelpers)
+
 project(StatusOptional LANGUAGES CXX)
 
 set(LIB_NAME statusoptional)
@@ -9,11 +11,18 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 option(BUILD_TEST "Build the test suits for the library" OFF)
 
+set(STATUS_OPTIONAL_NAME "statusoptional")
+set(STATUS_OPTIONAL_EXPORTNAME "statusoptionalTargets")
+
+set(CMAKE_INSTALL_BINDIR ${CMAKE_INSTALL_BINDIR})
+set(CMAKE_INSTALL_CMAKEDIR ${CMAKE_INSTALL_LIBDIR})
+set(CMAKE_INSTALL_LIBDIR ${CMAKE_INSTALL_LIBDIR}/${PROJECT_NAME})
+set(CMAKE_INSTALL_INCLUDEDIR ${CMAKE_INSTALL_INCLUDEDIR})
+
 #make the status optional header available when built as a module
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 add_library(statusoptional-lib INTERFACE)
-target_include_directories(statusoptional-lib INTERFACE .)
 
 add_library(statusoptional::statusoptional ALIAS statusoptional-lib)
 
@@ -61,3 +70,37 @@ target_link_libraries(
 )
 
 endif()
+
+install(TARGETS statusoptional-lib
+          EXPORT ${STATUS_OPTIONAL_EXPORTNAME}
+          RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+          LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+          ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+      )
+
+
+install(
+  EXPORT ${STATUS_OPTIONAL_EXPORTNAME}
+  DESTINATION ${CMAKE_INSTALL_CMAKEDIR}/cmake/${STATUS_OPTIONAL_NAME}
+  NAMESPACE ${STATUS_OPTIONAL_NAME}::
+  FILE ${STATUS_OPTIONAL_NAME}Targets.cmake
+  )
+
+configure_package_config_file(
+  "cmake/Config.cmake.in"
+  "${STATUS_OPTIONAL_NAME}Config.cmake"
+  INSTALL_DESTINATION ${CMAKE_INSTALL_CMAKEDIR}/cmake/${STATUS_OPTIONAL_NAME}
+  PATH_VARS
+    CMAKE_INSTALL_LIBDIR
+  )
+
+write_basic_package_version_file(
+  "${CMAKE_CURRENT_BINARY_DIR}/${STATUS_OPTIONAL_NAME}ConfigVersion.cmake"
+  VERSION "0.0"
+  COMPATIBILITY AnyNewerVersion
+)
+
+install(FILES
+        ${CMAKE_CURRENT_BINARY_DIR}/${STATUS_OPTIONAL_NAME}Config.cmake
+        ${CMAKE_CURRENT_BINARY_DIR}/${STATUS_OPTIONAL_NAME}ConfigVersion.cmake
+        DESTINATION ${CMAKE_INSTALL_CMAKEDIR}/cmake/${STATUS_OPTIONAL_NAME} )
