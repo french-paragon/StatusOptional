@@ -22,20 +22,20 @@ set(CMAKE_INSTALL_INCLUDEDIR ${CMAKE_INSTALL_INCLUDEDIR})
 #make the status optional header available when built as a module
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
-add_library(statusoptional-lib INTERFACE)
+add_library(statusoptional INTERFACE)
 
-add_library(statusoptional::statusoptional ALIAS statusoptional-lib)
+add_library(statusoptional::statusoptional ALIAS statusoptional)
 
-target_sources(statusoptional-lib PRIVATE status_optional.h)
+target_sources(statusoptional PRIVATE status_optional.h)
 
 target_include_directories(
-	  statusoptional-lib
+          statusoptional
 	  INTERFACE
 	  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/>
 	  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/${LIB_NAME}/>
 )
 
-get_target_property(LIB_SRC statusoptional-lib SOURCES)
+get_target_property(LIB_SRC statusoptional SOURCES)
 
 foreach(FILE IN LISTS LIB_SRC)
 	    if(FILE MATCHES "^((.*)/)?([^/]+)\\.h$")
@@ -71,7 +71,7 @@ target_link_libraries(
 
 endif()
 
-install(TARGETS statusoptional-lib
+install(TARGETS statusoptional
           EXPORT ${STATUS_OPTIONAL_EXPORTNAME}
           RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
           LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
