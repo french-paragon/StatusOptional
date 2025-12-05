@@ -14,6 +14,8 @@ option(BUILD_TEST "Build the test suits for the library" OFF)
 set(STATUS_OPTIONAL_NAME "statusoptional")
 set(STATUS_OPTIONAL_EXPORTNAME "statusoptionalTargets")
 
+include(GNUInstallDirs)
+
 set(CMAKE_INSTALL_BINDIR ${CMAKE_INSTALL_BINDIR})
 set(CMAKE_INSTALL_CMAKEDIR ${CMAKE_INSTALL_LIBDIR})
 set(CMAKE_INSTALL_LIBDIR ${CMAKE_INSTALL_LIBDIR}/${PROJECT_NAME})
